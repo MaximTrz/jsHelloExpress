@@ -81,7 +81,7 @@ function showConfirm(){
 function calcGoods(i){
 	const items = cartWrapper.querySelectorAll('.goods__item');
 	let empty = cartWrapper.querySelector('.empty');
-	badge.textContent = i + items.length; //считает к-во элементов в корзине
+	badge.textContent = i + items.length;
 	if (badge.textContent < 1) {
 	    empty.style.display = 'block';
 	}
@@ -112,5 +112,3 @@ function removeFromCart(){
 }
 
 });
-
-

@@ -31,6 +31,10 @@ window.addEventListener('DOMContentLoaded', ()=>{
 							empty = cartWrapper.querySelector('.empty');
 
 			trigger.remove();
+
+			showConfirm();
+			calcGoods(1);
+
 			removeBtn.classList.add('goods__item-remove');
 			removeBtn.innerHTML = '&times';
 			item.appendChild(removeBtn);
@@ -38,10 +42,75 @@ window.addEventListener('DOMContentLoaded', ()=>{
 			cartWrapper.appendChild(item);
 
 				if (empty) {
-					empty.remove();
+					empty.style.display = 'none';
 				}
+				calcTotal();
+				removeFromCart();
 		})
 	})
+
+function sliceTitle(){
+	titles.forEach(function(item){
+		if (item.textContent.length<70){
+			return;
+		} else {
+						item.textContent = item.textContent.slice(0, 70) + '...';
+				}
+	})
+}
+
+sliceTitle();
+
+function showConfirm(){
+	confirm.style.display = 'block';
+	let counter = 100;
+	const id = setInterval(frame, 10);
+	function frame (){
+		if (counter==10) {
+			clearInterval(id);
+			confirm.style.display = 'none';
+
+		} else {
+			counter--;
+			confirm.style.transform = `translateY(-${counter}px)`;
+			confirm.style.opacity = '.' + counter;
+		}
+	}
+}
+
+function calcGoods(i){
+	const items = cartWrapper.querySelectorAll('.goods__item');
+	let empty = cartWrapper.querySelector('.empty');
+	badge.textContent = i + items.length; //считает к-во элементов в корзине
+	if (badge.textContent < 1) {
+	    empty.style.display = 'block';
+	}
+}
+
+function calcTotal(){
+	const prices = document.querySelectorAll('.cart__wrapper > .goods__item > .goods__price > span');
+	console.log(prices);
+	let total = 0;
+	prices.forEach(function(item){
+		total += +item.textContent;
+	});
+	totalCost.textContent = total;
+	if (totalCost.textContent == '0') {
+		empty.style.display = 'block';
+	}
+}
+
+function removeFromCart(){
+	const removeBtn = cartWrapper.querySelectorAll('.goods__item-remove');
+	removeBtn.forEach(function(btn){
+		btn.addEventListener('click', ()=>{
+			btn.parentElement.remove();
+			calcGoods(0);
+			calcTotal();
+		});
+	});
+}
+
 });
 
 
